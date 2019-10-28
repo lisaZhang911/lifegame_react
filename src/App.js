@@ -16,76 +16,105 @@ class Board extends React.Component {
     super()
     this.state = {
       count:0,
-      squares: [null,'X',null,null,null,null,null,null,null ],
-      xIsNext:true
+      squares: [],
+      grid_count:0,
+      sty:{width:0}
     }
   }
 
   handleScand(){
-    console.log(this);
-    // this.setState({count:0})
-    //
-    // let nextOne = squares[i+1]
-    // let preOne = squares[i-1]
-    // let upOne = squares[i-3]
-    // let downOne = squares[i+3]
-    //
-    // if(nextOne != null){
-    //   this.setState({count:this.state.count++})
-    // }
-    // if(preOne != null){
-    //   this.setState({count:this.state.count++})
-    // }
-    // if(upOne != null){
-    //   this.setState({count:this.state.count++})
-    // }
-    // if(downOne != null){
-    //   this.setState({count:this.state.count++})
-    // }
-    //  // squares = this.state.squares.slice();
-    //  console.log(squares[i]);
-    // if(this.state.count<2){
-    //   squares[i] = null
-    // } else if(this.state.count == 2 || this.state.count ==3){
-    //   return
-    // } else if(this.state.count >3){
-    //   squares[i] = null
-    // }
-    // this.setState({squares:squares})
-    // console.log(this.state.count);
+    const squares = this.state.squares.slice();
+
+    let baseState,
+    nextOne,preOne,upOne,lUpOne,rUpOne,downOne,lDownOne,rDownOne = null
+    let count = 0
+    let grid_count = this.state.grid_count
+
+    for(let item = 0; item<squares.length; item++){
+      count = 0
+      baseState = squares[item]
+      nextOne = squares[item+1]
+      preOne = squares[item-1]
+      upOne = squares[item-grid_count]
+      lUpOne = squares[item-grid_count-1]
+      rUpOne = squares[item-grid_count+1]
+      downOne = squares[item+grid_count]
+      lDownOne = squares[item+grid_count-1]
+      rDownOne = squares[item+grid_count+1]
+      console.log('rD:',rDownOne);
+
+      if(nextOne != null && nextOne != undefined){
+        count++
+      }
+      if(preOne != null && preOne != undefined){
+        count++
+      }
+      if(upOne != null && upOne != undefined){
+        count++
+      }
+      if(lUpOne != null && lUpOne != undefined){
+        count++
+      }
+      if(rUpOne != null && rUpOne != undefined){
+        count++
+      }
+      if(downOne != null && downOne != undefined){
+        count++
+      }
+      if(lDownOne != null && lDownOne != undefined){
+        count++
+      }
+      if(rDownOne != null && rDownOne != undefined){
+        count++
+      }
+
+      if(baseState == null){
+        console.log('nullCell',item);
+        if(count >=3){
+          squares[item] = 'X'
+        }
+      } else {
+        console.log('aliveCell',item);
+        if(count<2 || count>3){
+          squares[item] = null
+        } else if(count == 2 || count ==3){
+          squares[item] = 'X'
+        }
+      }
+      console.log(count);
+    }
+    this.setState({squares:squares})
   }
   handleClick(i) {
    const squares = this.state.squares.slice();
    squares[i] = 'X'
    this.setState({squares:squares})
  }
-  renderSquare(i) {
-    return (
-      <Square
-          value={this.state.squares[i]}
-          onClick={() => this.handleClick(i)}/>
-    )
+  initBoard(w,h){
+    var grid = w*15-(w-1)
+    this.setState({grid_count:w})
+    this.setState({squares:Array(w*h).fill(null),sty:{width:grid+'px'}})
   }
 
   render() {
+    let square = this.state.squares.map((x,index) => <Square
+                                                        key={index}
+                                                        value={x}
+                                                        onClick={() => this.handleClick(index)}/>)
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
+        <div className="board-row" style={this.state.sty}>
+         {square}
         </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
+        <div className="btnWrap">
+          <button onClick={this.initBoard.bind(this,50,30)}>Size:50*30</button>
+          <button onClick={this.initBoard.bind(this,70,50)}>Size:70*50</button>
+          <button onClick={this.initBoard.bind(this,100,80)}>Size:100*80</button>
+          <button onClick={this.initBoard.bind(this,5,5)}>Size:5*5</button>
         </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
+        <div>
+          <button onClick={this.handleScand.bind(this)}>测试</button>
         </div>
-        <button onClick={this.handleScand.bind(this)}>测试</button>
       </div>
     );
   }

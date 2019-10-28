@@ -66,3 +66,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+### 日程记录
+
+1、棋盘为一个一维数组便利而成；
+2、遍历每个元素，并且找到它周围8个元素，并统计邻居情况的时候，似乎让计算变的很慢
+3、如何衡量每步js运算都花费了多少时间？
+4、从freecode的demo中找找灵感把
