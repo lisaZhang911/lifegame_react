@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.css';
 
+function test(){
+  console.log('tst');
+}
 class Square extends React.Component {
   render() {
     return (
@@ -18,6 +21,7 @@ class Board extends React.Component {
       count:0,
       squares: [],
       grid_count:0,
+      grid_total:0,
       sty:{width:0}
     }
   }
@@ -41,7 +45,7 @@ class Board extends React.Component {
       downOne = squares[item+grid_count]
       lDownOne = squares[item+grid_count-1]
       rDownOne = squares[item+grid_count+1]
-      console.log('rD:',rDownOne);
+      // console.log('rD:',rDownOne);
 
       if(nextOne != null && nextOne != undefined){
         count++
@@ -69,19 +73,19 @@ class Board extends React.Component {
       }
 
       if(baseState == null){
-        console.log('nullCell',item);
+        // console.log('nullCell',item);
         if(count >=3){
           squares[item] = 'X'
         }
       } else {
-        console.log('aliveCell',item);
+        // console.log('aliveCell',item);
         if(count<2 || count>3){
           squares[item] = null
         } else if(count == 2 || count ==3){
-          squares[item] = 'X'
+          continue;
         }
       }
-      console.log(count);
+      // console.log(count);
     }
     this.setState({squares:squares})
   }
@@ -90,12 +94,15 @@ class Board extends React.Component {
    squares[i] = 'X'
    this.setState({squares:squares})
  }
-  initBoard(w,h){
+  setBoard(w,h){
     var grid = w*15-(w-1)
-    this.setState({grid_count:w})
+    this.setState({grid_count:w,grid_total:w*h})
     this.setState({squares:Array(w*h).fill(null),sty:{width:grid+'px'}})
   }
 
+  componentDidMount(){
+    this.setBoard(50,30)
+  }
   render() {
     let square = this.state.squares.map((x,index) => <Square
                                                         key={index}
@@ -107,10 +114,10 @@ class Board extends React.Component {
          {square}
         </div>
         <div className="btnWrap">
-          <button onClick={this.initBoard.bind(this,50,30)}>Size:50*30</button>
-          <button onClick={this.initBoard.bind(this,70,50)}>Size:70*50</button>
-          <button onClick={this.initBoard.bind(this,100,80)}>Size:100*80</button>
-          <button onClick={this.initBoard.bind(this,5,5)}>Size:5*5</button>
+          <button onClick={this.setBoard.bind(this,50,30)}>Size:50*30</button>
+          <button onClick={this.setBoard.bind(this,70,50)}>Size:70*50</button>
+          <button onClick={this.setBoard.bind(this,100,80)}>Size:100*80</button>
+          <button onClick={this.setBoard.bind(this,5,5)}>Size:5*5</button>
         </div>
         <div>
           <button onClick={this.handleScand.bind(this)}>测试</button>
