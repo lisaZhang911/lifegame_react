@@ -20,15 +20,16 @@ class Board extends React.Component {
     this.state = {
       count:0,
       squares: [],
+      generator:0,
       grid_count:0,
-      grid_total:0,
+      grid_total:1500,
       sty:{width:0}
     }
   }
 
   handleScand(){
     const squares = this.state.squares.slice();
-
+    let generator = this.state.generator
     let baseState,
     nextOne,preOne,upOne,lUpOne,rUpOne,downOne,lDownOne,rDownOne = null
     let count = 0
@@ -87,7 +88,9 @@ class Board extends React.Component {
       }
       // console.log(count);
     }
-    this.setState({squares:squares})
+    generator++
+
+    this.setState({squares:squares,generator:generator})
   }
   handleClick(i) {
    const squares = this.state.squares.slice();
@@ -98,18 +101,34 @@ class Board extends React.Component {
     var grid = w*15-(w-1)
     this.setState({grid_count:w,grid_total:w*h})
     this.setState({squares:Array(w*h).fill(null),sty:{width:grid+'px'}})
+    console.log('set');
   }
-
+  initBoar(){
+    var grid = this.state.grid_total
+    var squares = []
+    for(var i=0;i<grid;i++){
+      if(Math.round(Math.random()*10)==10){
+        squares[i] = 'X'
+      } else {
+        squares[i] = null
+      }
+    }
+    this.setState({squares:squares})
+    this.setState({sty:{width:50*15-49+'px'}})
+  }
   componentDidMount(){
-    this.setBoard(50,30)
+    // this.setBoard(50,30)
+    // this.initBoar()
   }
   render() {
     let square = this.state.squares.map((x,index) => <Square
                                                         key={index}
                                                         value={x}
                                                         onClick={() => this.handleClick(index)}/>)
+    let gene = this.state.generator
     return (
       <div>
+        <p>generator:{gene}</p>
         <div className="board-row" style={this.state.sty}>
          {square}
         </div>
