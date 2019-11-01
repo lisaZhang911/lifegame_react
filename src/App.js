@@ -49,44 +49,52 @@ class Board extends React.Component {
       // console.log('rD:',rDownOne);
 
       if(nextOne != null && nextOne != undefined){
+        console.log('前');
         count++
       }
       if(preOne != null && preOne != undefined){
+        console.log('后');
         count++
       }
       if(upOne != null && upOne != undefined){
+        console.log('上');
         count++
       }
       if(lUpOne != null && lUpOne != undefined){
+        console.log('左上');
         count++
       }
       if(rUpOne != null && rUpOne != undefined){
+        console.log('右上');
         count++
       }
       if(downOne != null && downOne != undefined){
+        console.log('下');
         count++
       }
       if(lDownOne != null && lDownOne != undefined){
+        console.log('左下');
         count++
       }
       if(rDownOne != null && rDownOne != undefined){
+        console.log('右下');
         count++
       }
 
       if(baseState == null){
-        // console.log('nullCell',item);
-        if(count >=3){
+        console.log('nullCell',item+1);
+        if(count ==3){
           squares[item] = 'X'
         }
       } else {
-        // console.log('aliveCell',item);
+        console.log('aliveCell',item+1);
         if(count<2 || count>3){
           squares[item] = null
         } else if(count == 2 || count ==3){
           continue;
         }
       }
-      // console.log(count);
+      console.log(count);
     }
     generator++
 
@@ -118,7 +126,7 @@ class Board extends React.Component {
   }
   componentDidMount(){
     // this.setBoard(50,30)
-    // this.initBoar()
+    this.initBoar()
   }
   render() {
     let square = this.state.squares.map((x,index) => <Square
@@ -136,7 +144,7 @@ class Board extends React.Component {
           <button onClick={this.setBoard.bind(this,50,30)}>Size:50*30</button>
           <button onClick={this.setBoard.bind(this,70,50)}>Size:70*50</button>
           <button onClick={this.setBoard.bind(this,100,80)}>Size:100*80</button>
-          <button onClick={this.setBoard.bind(this,5,5)}>Size:5*5</button>
+          <button onClick={this.setBoard.bind(this,10,10)}>Size:10*10</button>
         </div>
         <div>
           <button onClick={this.handleScand.bind(this)}>测试</button>
