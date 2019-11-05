@@ -1,9 +1,6 @@
 import React from 'react';
 import './App.css';
 
-function test(){
-  console.log('tst');
-}
 class Square extends React.Component {
   render() {
     return (
@@ -26,7 +23,16 @@ class Board extends React.Component {
       sty:{width:0}
     }
   }
+   test(){
+    setTimeout(() => {
+      this.handleScand()
+      this.test()
+    },200)
+  }
+   test1() {
+    console.log('ss');
 
+  }
   handleScand(){
     const squares = this.state.squares.slice();
     let generator = this.state.generator
@@ -46,59 +52,48 @@ class Board extends React.Component {
       downOne = squares[item+grid_count]
       lDownOne = squares[item+grid_count-1]
       rDownOne = squares[item+grid_count+1]
-      // console.log('rD:',rDownOne);
 
       if(nextOne != null && nextOne != undefined){
-        console.log('前');
         count++
       }
       if(preOne != null && preOne != undefined){
-        console.log('后');
         count++
       }
       if(upOne != null && upOne != undefined){
-        console.log('上');
         count++
       }
       if(lUpOne != null && lUpOne != undefined){
-        console.log('左上');
         count++
       }
       if(rUpOne != null && rUpOne != undefined){
-        console.log('右上');
         count++
       }
       if(downOne != null && downOne != undefined){
-        console.log('下');
         count++
       }
       if(lDownOne != null && lDownOne != undefined){
-        console.log('左下');
         count++
       }
       if(rDownOne != null && rDownOne != undefined){
-        console.log('右下');
         count++
       }
 
       if(baseState == null){
-        console.log('nullCell',item+1);
         if(count ==3){
           squares[item] = 'X'
         }
       } else {
-        console.log('aliveCell',item+1);
         if(count<2 || count>3){
           squares[item] = null
         } else if(count == 2 || count ==3){
           continue;
         }
       }
-      console.log(count);
     }
     generator++
 
     this.setState({squares:squares,generator:generator})
+    // this.handleScand()
   }
   handleClick(i) {
    const squares = this.state.squares.slice();
@@ -109,19 +104,18 @@ class Board extends React.Component {
     var grid = w*15-(w-1)
     this.setState({grid_count:w,grid_total:w*h})
     this.setState({squares:Array(w*h).fill(null),sty:{width:grid+'px'}})
-    console.log('set');
   }
   initBoar(){
     var grid = this.state.grid_total
     var squares = []
     for(var i=0;i<grid;i++){
-      if(Math.round(Math.random()*10)==10){
+      if(Math.round(Math.random()*2)==2){
         squares[i] = 'X'
       } else {
         squares[i] = null
       }
     }
-    this.setState({squares:squares})
+    this.setState({squares:squares,grid_count:50})
     this.setState({sty:{width:50*15-49+'px'}})
   }
   componentDidMount(){
@@ -147,7 +141,7 @@ class Board extends React.Component {
           <button onClick={this.setBoard.bind(this,10,10)}>Size:10*10</button>
         </div>
         <div>
-          <button onClick={this.handleScand.bind(this)}>测试</button>
+          <button onClick={this.test.bind(this)}>测试</button>
         </div>
       </div>
     );
