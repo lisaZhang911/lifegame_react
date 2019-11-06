@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 
+var flag = 1
 class Square extends React.Component {
   render() {
     return (
@@ -23,14 +24,29 @@ class Board extends React.Component {
       sty:{width:0}
     }
   }
-   test(){
+  run(){
+    flag = 1
     setTimeout(() => {
       this.handleScand()
-      this.test()
+        // this.run()
+
+      if(flag == 1){
+        this.run()
+      }
     },200)
   }
-   test1() {
-    console.log('ss');
+  pause(){
+    flag = 0
+  }
+  resetGame(){
+    var grid_count = this.state.grid_count
+    if(grid_count == 50){
+      this.setBoard(50,30)
+    } else if(grid_count == 70){
+      this.setBoard(70,50)
+    } else if(grid_count == 100){
+      this.setBoard(100,80)
+    } else { this.setBoard(10,10) }
 
   }
   handleScand(){
@@ -102,12 +118,18 @@ class Board extends React.Component {
  }
   setBoard(w,h){
     var grid = w*15-(w-1)
-    this.setState({grid_count:w,grid_total:w*h})
-    this.setState({squares:Array(w*h).fill(null),sty:{width:grid+'px'}})
+    this.setState({grid_count:w,
+        grid_total:w*h,
+        generator:0,
+        squares:Array(w*h).fill(null),
+        sty:{width:grid+'px'}})
   }
   initBoar(){
     var grid = this.state.grid_total
+    var grid_count = this.state.grid_count
+
     var squares = []
+
     for(var i=0;i<grid;i++){
       if(Math.round(Math.random()*2)==2){
         squares[i] = 'X'
@@ -115,11 +137,10 @@ class Board extends React.Component {
         squares[i] = null
       }
     }
-    this.setState({squares:squares,grid_count:50})
-    this.setState({sty:{width:50*15-49+'px'}})
+    this.setState({squares:squares})
   }
   componentDidMount(){
-    // this.setBoard(50,30)
+    this.setBoard(50,30)
     this.initBoar()
   }
   render() {
@@ -141,7 +162,9 @@ class Board extends React.Component {
           <button onClick={this.setBoard.bind(this,10,10)}>Size:10*10</button>
         </div>
         <div>
-          <button onClick={this.test.bind(this)}>测试</button>
+          <button onClick={this.run.bind(this)}>开始</button>
+          <button onClick={this.pause.bind(this)}>暂停</button>
+          <button onClick={this.resetGame.bind(this)}>重置</button>
         </div>
       </div>
     );
